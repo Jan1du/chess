@@ -5,15 +5,14 @@ pygame.init()
 
 
 #============Constants===========
-width = 800
-height = 600
-board_width = 600
-board_height = 600
+width, height = 800, 600
+board_width, board_height = 600, 600
 fps = 60
-font1 = pygame.font.Font("freesansbold.ttf", 26)
-font2 = pygame.font.Font('freesansbold.ttf', 40)
-font3 = pygame.font.Font("freesansbold.ttf", 50)
-timer = pygame.time.Clock()
+montserrat = "fonts/Montserrat/Montserrat-ExtraBold.ttf"
+font1 = pygame.font.Font(montserrat, 26)
+font2 = pygame.font.Font(montserrat, 40)
+font3 = pygame.font.Font(montserrat, 50)
+
 
 screen = pygame.display.set_mode([width,height])
 pygame.display.set_caption("chess")
@@ -41,7 +40,6 @@ black = (0,0,0)
 white = (255,255,255)
 grey = (80,80,80)
 red = (255,0,0)
-blue = (0,0,255)
 
 
 
@@ -78,7 +76,8 @@ class assets():
 white_images = [assets.w_pawn, assets.w_queen, assets.w_king, assets.w_knight, assets.w_rook, assets.w_bishop]
 black_images = [assets.b_pawn, assets.b_queen, assets.b_king, assets.b_knight, assets.b_rook, assets.b_bishop]
 
-piece_list = ['pawn', 'queen', 'king', 'knight', 'rook', 'bishop']
+piece_list = ['pawn', 'queen', 'king', 'knight', 'rook', 'bishop'] #To link the images with the black_pieces and white_pieces
+
 # check variables/ flashing counter
 counter = 0
 winner = ''
@@ -129,6 +128,7 @@ def move_options(pieces, locations, turn):
     return all_moves_list
 
 
+#Pawn Movement
 def moves_pawn(position, color):
     moves_list = []
     if color == 'white':
@@ -165,6 +165,7 @@ def moves_pawn(position, color):
 
     return moves_list
 
+#Rook Movement
 def moves_rook(position, color):
     moves_list = []
     if color == 'white':
@@ -199,6 +200,7 @@ def moves_rook(position, color):
                 path = False
     return moves_list
 
+#Kight Movement
 def moves_knight(position, color):
     moves_list = []
     if color == 'white':
@@ -214,6 +216,7 @@ def moves_knight(position, color):
             moves_list.append(target)
     return moves_list
 
+#Bishop Movement
 def moves_bishop(position, color):
     moves_list = []
     if color == 'white':
@@ -248,6 +251,7 @@ def moves_bishop(position, color):
                 path = False
     return moves_list
 
+#Queen Movement
 def moves_queen(position, color):
     moves_list = moves_bishop(position, color)
     second_list = moves_rook(position, color)
@@ -255,6 +259,7 @@ def moves_queen(position, color):
         moves_list.append(second_list[i])
     return moves_list
 
+#King Movement
 def moves_king(position, color):
     moves_list = []
     if color == 'white':
@@ -269,6 +274,8 @@ def moves_king(position, color):
             moves_list.append(target)
     return moves_list
 
+
+#Checking the valid moves for a selected piece
 def check_valid_moves():
     if turn_step < 2:
         options_list = white_options
@@ -277,6 +284,7 @@ def check_valid_moves():
     valid_options = options_list[selection]
     return valid_options
 
+#Displaying the valid moves for the selected piece
 def draw_valid(moves):
     for i in range(len(moves)):
         pygame.draw.circle(screen, red, (moves[i][0] * 75 + 37, moves[i][1] * 75 + 37), 5)
