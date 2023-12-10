@@ -1,14 +1,16 @@
 import pygame
 import os
+from main import (
+    colors,
+    screen_width as width,
+    screen_height as height
+)
 
 pygame.init()
-
-
 #============Constants===========
-width, height = 800, 600
 board_width, board_height = 600, 600
 fps = 60
-montserrat = "fonts/Montserrat/Montserrat-ExtraBold.ttf"
+montserrat = "fonts/Montserrat/Montserrat-Bold.ttf"
 font1 = pygame.font.Font(montserrat, 26)
 font2 = pygame.font.Font(montserrat, 40)
 font3 = pygame.font.Font(montserrat, 50)
@@ -35,43 +37,42 @@ selection = 100     #A large value for when no piece is selected.
 valid_moves = []
 
 
-#=============colors=============
-black = (0,0,0)
-white = (255,255,255)
-grey = (80,80,80)
-red = (255,0,0)
-
-
-
 #=============Assets=============
 class assets():
-  background = pygame.image.load(os.path.join("chess assets", "chess_board.png"))
-  background = pygame.transform.scale(background, (board_width, board_height))
+    background = pygame.image.load(os.path.join("chess assets", "chess_board.png"))
+    background = pygame.transform.scale(background, (board_width, board_height))
 
-  w_king = pygame.image.load(os.path.join("chess assets", "w_king.png"))
-  w_king = pygame.transform.scale(w_king, (board_width/8, board_height/8))
-  b_king = pygame.image.load(os.path.join("chess assets", "b_king.png"))
-  b_king = pygame.transform.scale(b_king, (board_width/8, board_height/8))
-  w_queen = pygame.image.load(os.path.join("chess assets", "w_queen.png"))
-  w_queen = pygame.transform.scale(w_queen, (board_width/8, board_height/8))
-  b_queen = pygame.image.load(os.path.join("chess assets", "b_queen.png"))
-  b_queen = pygame.transform.scale(b_queen, (board_width/8, board_height/8))
-  w_rook = pygame.image.load(os.path.join("chess assets", "w_rook.png"))
-  w_rook = pygame.transform.scale(w_rook, (board_width/8, board_height/8))
-  b_rook = pygame.image.load(os.path.join("chess assets", "b_rook.png"))
-  b_rook = pygame.transform.scale(b_rook, (board_width/8, board_height/8))
-  w_bishop = pygame.image.load(os.path.join("chess assets", "w_bishop.png"))
-  w_bishop = pygame.transform.scale(w_bishop, (board_width/8, board_height/8))
-  b_bishop = pygame.image.load(os.path.join("chess assets", "b_bishop.png"))
-  b_bishop = pygame.transform.scale(b_bishop, (board_width/8, board_height/8))
-  w_knight = pygame.image.load(os.path.join("chess assets", "w_knight.png"))
-  w_knight = pygame.transform.scale(w_knight, (board_width/8, board_height/8))
-  b_knight = pygame.image.load(os.path.join("chess assets", "b_knight.png"))
-  b_knight = pygame.transform.scale(b_knight, (board_width/8, board_height/8))
-  w_pawn = pygame.image.load(os.path.join("chess assets", "w_pawn.png"))
-  w_pawn = pygame.transform.scale(w_pawn, (board_width/8, board_height/8))
-  b_pawn = pygame.image.load(os.path.join("chess assets", "b_pawn.png"))
-  b_pawn = pygame.transform.scale(b_pawn, (board_width/8, board_height/8))
+    move_sound = pygame.mixer.Sound("chess assets/move.wav")
+    capture_sound = pygame.mixer.Sound("chess assets/capture.wav")
+    check_sound = pygame.mixer.Sound("chess assets/check.wav")
+    castle_sound = pygame.mixer.Sound("chess assets/castle.wav")
+    mate_sound = pygame.mixer.Sound("chess assets/mate.wav")
+    promotion_sound = pygame.mixer.Sound("chess assets/promote.wav")
+
+    w_king = pygame.image.load(os.path.join("chess assets", "w_king.png"))
+    w_king = pygame.transform.scale(w_king, (board_width/8, board_height/8))
+    b_king = pygame.image.load(os.path.join("chess assets", "b_king.png"))
+    b_king = pygame.transform.scale(b_king, (board_width/8, board_height/8))
+    w_queen = pygame.image.load(os.path.join("chess assets", "w_queen.png"))
+    w_queen = pygame.transform.scale(w_queen, (board_width/8, board_height/8))
+    b_queen = pygame.image.load(os.path.join("chess assets", "b_queen.png"))
+    b_queen = pygame.transform.scale(b_queen, (board_width/8, board_height/8))
+    w_rook = pygame.image.load(os.path.join("chess assets", "w_rook.png"))
+    w_rook = pygame.transform.scale(w_rook, (board_width/8, board_height/8))
+    b_rook = pygame.image.load(os.path.join("chess assets", "b_rook.png"))
+    b_rook = pygame.transform.scale(b_rook, (board_width/8, board_height/8))
+    w_bishop = pygame.image.load(os.path.join("chess assets", "w_bishop.png"))
+    w_bishop = pygame.transform.scale(w_bishop, (board_width/8, board_height/8))
+    b_bishop = pygame.image.load(os.path.join("chess assets", "b_bishop.png"))
+    b_bishop = pygame.transform.scale(b_bishop, (board_width/8, board_height/8))
+    w_knight = pygame.image.load(os.path.join("chess assets", "w_knight.png"))
+    w_knight = pygame.transform.scale(w_knight, (board_width/8, board_height/8))
+    b_knight = pygame.image.load(os.path.join("chess assets", "b_knight.png"))
+    b_knight = pygame.transform.scale(b_knight, (board_width/8, board_height/8))
+    w_pawn = pygame.image.load(os.path.join("chess assets", "w_pawn.png"))
+    w_pawn = pygame.transform.scale(w_pawn, (board_width/8, board_height/8))
+    b_pawn = pygame.image.load(os.path.join("chess assets", "b_pawn.png"))
+    b_pawn = pygame.transform.scale(b_pawn, (board_width/8, board_height/8))
 
 white_images = [assets.w_pawn, assets.w_queen, assets.w_king, assets.w_knight, assets.w_rook, assets.w_bishop]
 black_images = [assets.b_pawn, assets.b_queen, assets.b_king, assets.b_knight, assets.b_rook, assets.b_bishop]
@@ -85,7 +86,7 @@ game_over = False
 
 
 def draw_board():
-    screen.fill(grey)
+    screen.fill(colors.grey)
     screen.blit(assets.background, (0,0))
 
 def draw_pieces():
@@ -94,7 +95,7 @@ def draw_pieces():
         screen.blit(white_images[index], (white_locations[i][0] * 75, white_locations[i][1] * 75))
         if turn_step < 2:
             if selection == i:
-                pygame.draw.rect(screen, red, [white_locations[i][0] * 75, white_locations[i][1] * 75,
+                pygame.draw.rect(screen, colors.red, [white_locations[i][0] * 75, white_locations[i][1] * 75,
                                                  75, 75], 3)
 
 
@@ -103,13 +104,13 @@ def draw_pieces():
         screen.blit(black_images[index], (black_locations[i][0] * 75, black_locations[i][1] * 75))
         if turn_step >= 2:
             if selection == i:
-                pygame.draw.rect(screen, red, [black_locations[i][0] * 75, black_locations[i][1] * 75, 75, 75], 3)
+                pygame.draw.rect(screen, colors.red, [black_locations[i][0] * 75, black_locations[i][1] * 75, 75, 75], 3)
 
 
 def move_options(pieces, locations, turn):
     moves_list = []
     all_moves_list = []
-    for i in range((len(pieces))):
+    for i in range(len(pieces)):
         location = locations[i]
         piece = pieces[i]
         if piece == 'pawn':
@@ -166,7 +167,7 @@ def moves_pawn(position, color):
     return moves_list
 
 #Rook Movement
-def moves_rook(position, color):
+def moves_rook(position, color): 
     moves_list = []
     if color == 'white':
         enemies_list = black_locations
@@ -174,28 +175,25 @@ def moves_rook(position, color):
     else:
         friends_list = black_locations
         enemies_list = white_locations
-    for i in range(4):  # down, up, right, left
+
+    direction_of_movement = [(0, 1), (0, -1), (1, 0), (-1, 0)] #right, left, down, up
+    
+    for i in range(len(direction_of_movement)): 
         path = True
         chain = 1
-        if i == 0:
-            x = 0
-            y = 1
-        elif i == 1:
-            x = 0
-            y = -1
-        elif i == 2:
-            x = 1
-            y = 0
-        else:
-            x = -1
-            y = 0
+
+        x, y = direction_of_movement[i]
+      
         while path:
-            if (position[0] + (chain * x), position[1] + (chain * y)) not in friends_list and \
-                    0 <= position[0] + (chain * x) <= 7 and 0 <= position[1] + (chain * y) <= 7:
-                moves_list.append((position[0] + (chain * x), position[1] + (chain * y)))
-                if (position[0] + (chain * x), position[1] + (chain * y)) in enemies_list:
+            nextChainSpace = (position[0] + (chain * x), position[1] + (chain * y)) #the next space in the line of the rooks movement
+            if nextChainSpace not in friends_list:
+                if 0 <= nextChainSpace[0] <= 7 and 0 <= nextChainSpace[1] <= 7:
+                    moves_list.append(nextChainSpace)
+                    if nextChainSpace in enemies_list:
+                        path = False
+                    chain += 1
+                else:
                     path = False
-                chain += 1
             else:
                 path = False
     return moves_list
@@ -225,28 +223,25 @@ def moves_bishop(position, color):
     else:
         friends_list = black_locations
         enemies_list = white_locations
-    for i in range(4):  # up-right, up-left, down-right, down-left
+
+    direction_of_movement = [(1, 1), (1, -1), (-1, 1), (-1, -1)]  #down-right, down-left, up-right, down-left
+  
+    for i in range(len(direction_of_movement)): 
         path = True
         chain = 1
-        if i == 0:
-            x = 1
-            y = -1
-        elif i == 1:
-            x = -1
-            y = -1
-        elif i == 2:
-            x = 1
-            y = 1
-        else:
-            x = -1
-            y = 1
+
+        x, y = direction_of_movement[i]
+      
         while path:
-            if (position[0] + (chain * x), position[1] + (chain * y)) not in friends_list and \
-                    0 <= position[0] + (chain * x) <= 7 and 0 <= position[1] + (chain * y) <= 7:
-                moves_list.append((position[0] + (chain * x), position[1] + (chain * y)))
-                if (position[0] + (chain * x), position[1] + (chain * y)) in enemies_list:
+            nextChainSpace = (position[0] + (chain * x), position[1] + (chain * y))
+            if nextChainSpace not in friends_list:
+                if 0 <= nextChainSpace[0] <= 7 and 0 <= nextChainSpace[1] <= 7:
+                    moves_list.append(nextChainSpace)
+                    if nextChainSpace in enemies_list:
+                        path = False
+                    chain += 1
+                else:
                     path = False
-                chain += 1
             else:
                 path = False
     return moves_list
@@ -287,7 +282,7 @@ def check_valid_moves():
 #Displaying the valid moves for the selected piece
 def draw_valid(moves):
     for i in range(len(moves)):
-        pygame.draw.circle(screen, red, (moves[i][0] * 75 + 37, moves[i][1] * 75 + 37), 5)
+        pygame.draw.circle(screen, colors.red, (moves[i][0] * 75 + 37, moves[i][1] * 75 + 37), 5)
 
 '''
 def draw_check():
@@ -313,7 +308,6 @@ clock = pygame.time.Clock()
 running = True
 black_options = move_options(black_pieces, black_locations, 'black')
 white_options = move_options(white_pieces, white_locations, 'white')
-
 
 while running:
     clock.tick(fps)
@@ -348,6 +342,10 @@ while running:
 
                         black_pieces.pop(black_piece)
                         black_locations.pop(black_piece)
+                        assets.capture_sound.play()                    
+                    else:
+                        assets.move_sound.play()
+                        
                     black_options = move_options(black_pieces, black_locations, 'black')
                     white_options = move_options(white_pieces, white_locations, 'white')
                     turn_step = 2
@@ -371,12 +369,15 @@ while running:
 
                         white_pieces.pop(white_piece)
                         white_locations.pop(white_piece)
+                        assets.capture_sound.play()
+                    else:
+                        assets.move_sound.play()
+
                     black_options = move_options(black_pieces, black_locations, 'black')
                     white_options = move_options(white_pieces, white_locations, 'white')
                     turn_step = 0
                     selection = 100
                     valid_moves = []
 
-            print(winner)
-
-    
+            if winner != '':
+                print(winner)
