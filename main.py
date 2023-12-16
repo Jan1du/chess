@@ -1,27 +1,25 @@
 import pygame
 import os
 import time
+import pvp
+from pvp import (
+    colors,
+    width,
+    height
+)
 
 pygame.init()
 
-#--colors--
-class colors:
-    black = (0,0,0)
-    white = (255,255,255)
-    grey = (50,50,50)
-    light_grey = (150,150,150)
-    blue = (0, 158, 248)
-    red = (255,0,0)
 
-#--constants--
-screen_width, screen_height = 900, 600
-img_width = img_height = 400
+#--Constants--#
+img_width = img_height = 425
 button_width, button_height = 250, 75
 
-#--Variables--
+
+#--Variables--#
 play_time = 0
 
-#--assets--
+#--assets--#
 montserrat = "fonts/Montserrat/Montserrat-Bold.ttf"
 font = pygame.font.Font(montserrat, 37)
 arc = pygame.image.load(os.path.join("chess assets", "arc.png"))
@@ -29,7 +27,7 @@ arc = pygame.transform.scale(arc, (180, 200))
 image = pygame.image.load(os.path.join("chess assets", "chess_image.png"))
 image = pygame.transform.scale(image, (img_width, img_height))
 
-screen = pygame.display.set_mode([screen_width, screen_height])  
+screen = pygame.display.set_mode([width, height])  
 pygame.display.set_caption("chess")
 
 def display_time():
@@ -63,18 +61,31 @@ def main():
         display_time()
         pygame.display.flip()
 
+        #changes the cursor when the cursor is within the button
+        mouse_pos = pygame.mouse.get_pos()
+        if 75 <= mouse_pos[0] <= 325 and 350 <= mouse_pos[1] <= 425:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)        
+        
+        elif 75 <= mouse_pos[0]<= 325 and 450 <= mouse_pos[1] <= 525:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+            
+        else:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                running = False          
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 pos = pygame.mouse.get_pos()
                 if play_button.collidepoint(pos):
-                    import pvp     #Play window is accessed from here
-                    running = False  #Exit the main loop if the pvp file is closed
+                    pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW) #Changes the cursor back to normal
+                    pvp.main()  #Play window is accessed from here
+                    running = False
 
                 if learn_button.collidepoint(pos):
+                    pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW) #Changes the cursor back to normal
                     pass     #Learn window is accessed from here
-
 
 main()
